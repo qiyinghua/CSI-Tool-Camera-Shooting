@@ -38,7 +38,6 @@ int main(int argc, char** argv)
 	struct sockaddr_nl proc_addr, kern_addr;	// addrs for recv, send, bind
 	struct cn_msg *cmsg;
 	char buf[4096];
-	//int ret;
 	unsigned short l, l2;
 	int count = 0;
     shmid = shmget(0x5120, 0, 0);
@@ -107,11 +106,9 @@ int main(int argc, char** argv)
 		l2 = htons(l);
 		fwrite(&l2, 1, sizeof(unsigned short), out);
 		ret = fwrite(cmsg->data, 1, l, out);
-		if (count % 100 == 0)
-			printf("wrote %d bytes [msgcnt=%u]\n", ret, count);
+		if (count % 100 == 0) printf("wrote %d bytes [msgcnt=%u]\n", ret, count);
+		p->count = count;
 		++count;
-		//strcpy(p->path, "pic");
-        p->count = count;
 		if (ret != l)
 			exit_program_err(1, "fwrite");
 	}
